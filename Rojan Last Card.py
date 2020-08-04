@@ -42,36 +42,33 @@ diamonds = []
 hearts = []
 spades = []
 
-"***********************************************************"
+"********************************************************************"
 
-club_counter = 0
-for i in range(13):
-    club = ("{} of {}".format(ranks[i], suits[0]))
-    if club not in deck:
-        deck.append(club)
-        clubs.append(club)
+suit_list = [clubs, diamonds, hearts, spades]
+suit_list2 = ["clubs", "diamonds", "hearts", "spades"]
 
+rank_list = [aces, twos, threes, fours, fives, sixes, sevens, eights, nines, tens, jacks, queens, kings]
+rank_list2 = ["aces", "twos", "threes", "fours", "fives", "sixes", "sevens", "eights", "nines", "tens", "jacks", "queens", "kings"]
 
-diamond_counter = 0
-for i in range(13):
-    diamond = ("{} of {}".format(ranks[i], suits[1]))
-    if diamond not in deck:
-        deck.append(diamond)
-        diamonds.append(diamond)
+"********************************************************************"
+"separating cards into their ranks and suits"
 
-heart_counter = 0
-for i in range(13):
-    heart = ("{} of {}".format(ranks[i], suits[2]))
-    if heart not in deck:
-        deck.append(heart)
-        hearts.append(heart)
-
-spade_counter = 0
-for i in range(13):
-    spade = ("{} of {}".format(ranks[i], suits[3]))
-    if spade not in deck:
-        deck.append(spade)
-        spades.append(spade)
+for e in range(4):
+    for i in range(13):
+        card = ('{} of {}'.format(ranks[i], suits[e]))
+        suit_list[e-1].append(card)
+        rank_list[i-1].append(card)
+        if card not in deck:
+            deck.append(card)
 
 print(deck)
+
+"********************************************************************"
+
+
+
+
+
+
+
 
