@@ -65,7 +65,16 @@ print(deck)
 
 "********************************************************************"
 
+"Functions to check the rank and suit of any card"
 
+def suit_checker(d):
+    global suit_sorter
+
+    for i in range(4):
+        if d in suit_list(i-1):
+            suit_check = 1
+            break
+    suit_sorter = suit_list2[suit_check]
 
 
 
