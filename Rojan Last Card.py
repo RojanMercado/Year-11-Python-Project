@@ -56,8 +56,8 @@ rank_list2 = ["aces", "twos", "threes", "fours", "fives", "sixes", "sevens", "ei
 for e in range(4):
     for i in range(13):
         card = ('{} of {}'.format(ranks[i], suits[e]))
-        suit_list[e].append(card)
-        rank_list[i].append(card)
+        suit_list[e-1].append(card)
+        rank_list[i-1].append(card)
         if card not in deck:
             deck.append(card)
 
@@ -68,22 +68,20 @@ deck = len(deck)
 
 "Functions to check the rank and suit of any card"
 
-def suit_checker(suit_you_want_to_check):
+def suit_checker(card_you_want_to_check):
     global suit_sorter
 
     for i in range(4):
-        print(i)
-        if suit_you_want_to_check in suit_list(i):
+        if card_you_want_to_check in suit_list[i-1]:
             suit_check = i
             break
-    print(suit_check)
     suit_sorter = suit_list2[suit_check]
 
-def rank_checker(rank_you_want_to_check):
+def rank_checker(f):
     global rank_sorter
 
     for i in range(13):
-        if rank_you_want_to_check in rank_list[i]:
+        if f in rank_list[i-1]:
             rank_check = i
             break
     rank_sorter = rank_list2[rank_check]
@@ -93,6 +91,7 @@ print(suit_sorter)
 
 rank_checker("5 of Hearts")
 print(rank_sorter)
+
 
 
 
