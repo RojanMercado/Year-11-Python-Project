@@ -1,6 +1,8 @@
 #Imports
 from random import*
 from random import shuffle
+import sys
+import time
 
 """Basic Functions"""
 def gap():
@@ -9,6 +11,12 @@ def player_print():
     print("Your turn: ")
 def bot_move(which_bot_text):
     print("Bot {}'s Turn:".format(which_bot_text))
+def one():
+    time.sleep(1)
+def two():
+    time.sleep(2)
+def sleep(how_many_seconds_you_want_to_wait):
+    time.sleep(how_many_seconds_you_want_to_wait)
 
 arrow = "> "
 
@@ -170,19 +178,26 @@ while x == 1:
         deck.remove(player_card)
 
 "********************************************************************"
+current_card = ''
 
 bots_list = [bot_one_list, bot_two_list]
 
+"""function which automates bots picking up"""
 def pick_up(which_bot):
     current_bot_list = bots_list[which_bot]
     current_bot_list.append(deck[0])
     deck.remove(deck[0])
 
+"""function which almost completely automates the bots turn"""
 def bot_turn(which_bot, last_card_played):
     global playing_card
     global which_bot_string
+    global current_card
 
     x = 1
+
+    gap()
+    two()
 
     #making which_bot into a string
     def which_bot_string(which_bot):
@@ -216,13 +231,28 @@ def bot_turn(which_bot, last_card_played):
         rank_checker(checking_card)
         checking_card_rank = returned_rank
 
+        """checking if the card is valid card to be played from the current card"""
         if checking_card_rank == current_rank or checking_card_suit == current_suit:
 
             bot_move(which_bot_text)
             playing_card = checking_card
             print("{}{}".format(arrow, playing_card))
+            gap()
+
+            current_card = playing_card
 
             current_bot_list.remove(playing_card)
+
+            """if a bot uses all their cards, they win"""
+
+            if len(current_bot_list) == 1:
+                print("'Bot {}".format(which_bot_text))
+                print(arrow, "LAST CARD!")
+
+            if len(current_bot_list) == 0:
+                print("Bot {} Wins".format(which_bot_text))
+                sys.exit()
+
             break
 
         if i == bot_list_len-1:
@@ -230,6 +260,8 @@ def bot_turn(which_bot, last_card_played):
             bot_move(which_bot_text)
             print("{}{}".format(arrow, "Picks Up"))
             pick_up(which_bot)
+            gap()
+
             break
 
 #********************************************************************#
@@ -242,12 +274,20 @@ def print_player_list():
 def player_turn(card):
 
     global current_card
-
+    one()
+    print("********************************************************************")
+    gap()
+    player_list_len = len(player_list)
     print_player_list()
     gap()
+    print("Current Card")
+    print(arrow, current_card)
+    gap()
+    two()
 
     print("What card do you want to play?")
     print("(If you want to pick up, enter '0')")
+
 
     y = 1
     while y == 1:
@@ -294,6 +334,15 @@ def player_turn(card):
 
                         player_print()
                         print("{}{}".format(arrow, current_card))
+                        player_list.remove(current_card)
+
+                        if player_list_len == 1:
+                            print("You")
+                            print(arrow, "LAST CARD")
+                        if player_list_len == 0:
+                            print("You won")
+                            sys.exit()
+
 
                         break
 
@@ -303,14 +352,25 @@ def player_turn(card):
             print("Please type in a valid number")
 
 
-print("This is Last Card")
+print("Last Card")
+one()
+gap()
 
 starting_card = deck[0]
 print("Starting card")
 print(arrow, starting_card)
+
+current_card = starting_card
 gap()
+two()
 
 player_turn(starting_card)
+
+while True:
+    for i in range(2):
+        bot_turn(i-1, current_card)
+
+    player_turn(current_card)
 
 
 
