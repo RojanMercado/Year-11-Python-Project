@@ -57,13 +57,20 @@ rank_list = [aces, twos, threes, fours, fives, sixes, sevens, eights, nines, ten
 rank_list2 = ["aces", "twos", "threes", "fours", "fives", "sixes", "sevens", "eights", "nines", "tens", "jacks", "queens", "kings"]
 
 "********************************************************************"
+
+power_card_list = []
+
+"********************************************************************"
+
 "separating cards into their ranks and suits"
 
 for e in range(4):
     for i in range(13):
         card = ('{} of {}'.format(ranks[i], suits[e]))
-        suit_list[e-1].append(card)
-        rank_list[i-1].append(card)
+        suit_list[e].append(card)
+        rank_list[i].append(card)
+        if i == 2 or i == 5 or i == 1:
+            power_card_list.append(card)
         if card not in deck:
             deck.append(card)
 
@@ -164,6 +171,7 @@ while x == 1:
 
     player_list_len = len(player_list)
 
+    """loop will break when the player list has 5 cards/objects"""
     if player_list_len == 5:
         x = 1
         break
@@ -176,6 +184,35 @@ while x == 1:
         player_list.append(player_card)
 
         deck.remove(player_card)
+
+"********************************************************************"
+#special function which checks if the card is in a power_card list
+
+def power_card_checker(card_you_want_be_checked):
+    global power_five
+    global power_two
+    global power_ace
+
+    """returning the rank of the card"""
+    for i in range(13):
+        if card_you_want_be_checked in rank_list[i]:
+            card_ranker = rank_list2[i]
+            break
+
+    if card_ranker == rank_list2[5]:
+        power_five = 1
+        power_two = 0
+        power_ace = 0
+
+    if card_ranker == rank_list2[2]:
+        power_five = 0
+        power_two = 2
+        power_ace = 0
+
+    if card_ranker == rank_list2[1]:
+        power_five = 0
+        power_two = 0
+        power_ace = 1
 
 "********************************************************************"
 current_card = ''
@@ -240,6 +277,7 @@ def bot_turn(which_bot, last_card_played):
             gap()
 
             current_card = playing_card
+            power_card_checker(current_card)
 
             current_bot_list.remove(playing_card)
 
@@ -285,7 +323,7 @@ def player_turn(card):
     gap()
     two()
 
-    print("What card do you want to play?")
+    print("Type in the number of the card you want to play in your list")
     print("(If you want to pick up, enter '0')")
 
 
@@ -366,10 +404,12 @@ two()
 
 player_turn(starting_card)
 
+power_card_checker("fa")
+
 while True:
     for i in range(2):
         bot_turn(i-1, current_card)
-
+    print("{}".format(len(deck)))
     player_turn(current_card)
 
 
