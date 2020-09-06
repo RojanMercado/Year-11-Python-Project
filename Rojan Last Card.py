@@ -204,32 +204,41 @@ def power_card_checker(card_you_want_be_checked):
         power_two = 0
         power_ace = 0
 
-    if card_ranker == rank_list2[2]:
+    elif card_ranker == rank_list2[2]:
         power_five = 0
         power_two = 2
         power_ace = 0
 
-    if card_ranker == rank_list2[1]:
+    elif card_ranker == rank_list2[1]:
         power_five = 0
         power_two = 0
         power_ace = 1
 
+    else:
+        power_five = 0
+        power_two = 0
+        power_ace = 0
 "********************************************************************"
 current_card = ''
 
 bots_list = [bot_one_list, bot_two_list]
 
 """function which automates bots picking up"""
-def pick_up(which_bot):
+def pick_up(which_bot, number):
     current_bot_list = bots_list[which_bot]
-    current_bot_list.append(deck[0])
-    deck.remove(deck[0])
+
+    for i in range(number):
+        current_bot_list.append(deck[0])
+        deck.remove(deck[0])
 
 """function which almost completely automates the bots turn"""
 def bot_turn(which_bot, last_card_played):
     global playing_card
     global which_bot_string
     global current_card
+
+    """implementing power cards"""
+    global power_card
 
     x = 1
 
@@ -323,14 +332,29 @@ def player_turn(card):
     gap()
     two()
 
+    """implementing power cards"""
+    global power_card
+
     print("Type in the number of the card you want to play in your list")
     print("(If you want to pick up, enter '0')")
+
 
 
     y = 1
     while y == 1:
         try:
             player_turn_index = int(input(''))
+
+            if power_five == 1:
+                rank_checker(player_list[player_turn_index])
+                five_checker = returned_rank
+
+                rank_checker(current_card)
+                current_card_rank = returned_rank
+
+                if five_checker != rank_checker:
+                    print("The current card is a {}".format(current_card))
+                    print("If you do not have a Five, then you must pick up five")
             if player_turn_index == 0:
                 player_list.append(deck[0])
                 deck.remove(deck[0])
@@ -381,7 +405,6 @@ def player_turn(card):
                             print("You won")
                             sys.exit()
 
-
                         break
 
 
@@ -394,7 +417,12 @@ print("Last Card")
 one()
 gap()
 
-starting_card = deck[0]
+"""ensuring that the starting card is not a power card"""
+for i in range(len(deck)):
+    starting_card = deck[i]
+    if starting_card not in power_card_list:
+        break
+
 print("Starting card")
 print(arrow, starting_card)
 
@@ -404,7 +432,6 @@ two()
 
 player_turn(starting_card)
 
-power_card_checker("fa")
 
 while True:
     for i in range(2):
