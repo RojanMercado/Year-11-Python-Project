@@ -105,6 +105,17 @@ def shuffle_deck():
 
 "********************************************************************"
 
+"""counting how many times a five has been played"""
+def power_five_counter():
+    global power_five_count
+
+    int(power_five_count)
+
+    if current_card in fives:
+        power_five_count += 1
+
+"********************************************************************"
+
 """Bot one"""
 bot_one_list = []
 x = 1
@@ -223,12 +234,19 @@ current_card = ''
 
 bots_list = [bot_one_list, bot_two_list]
 
-"""function which automates bots picking up"""
+"""function which automates bots and the player picking up"""
 def pick_up(which_bot, number):
     current_bot_list = bots_list[which_bot]
 
     for i in range(number):
         current_bot_list.append(deck[0])
+        deck.remove(deck[0])
+
+
+def pick_up_player(number):
+
+    for i in range(number):
+        player_list.append(deck[0])
         deck.remove(deck[0])
 
 """function which almost completely automates the bots turn"""
@@ -382,8 +400,9 @@ def player_turn(card):
                     rank_checker(player_turn_card)
                     player_value = returned_rank
 
+#********************************************************************#
 
-                    """implementing power five"""
+                    #implementing power five for the situation
                     if power_five == 1:
 
                         rank_checker(player_card)
@@ -394,8 +413,9 @@ def player_turn(card):
 
                         if five_checker != rank_checker:
                             print("The current card is a {}".format(current_card))
-                            print("If you do not have a Five, then you must pick up {}".format(power_five_compilation))
-
+                            print("If you do not have a Five, then you must pick up {} cards from the deck".format(power_five_compilation))
+                    
+#********************************************************************#
 
                     #if the last card played was not a power card, then the main bulk of code continues through here
                     if power_five == 0 and power_ace == 0: and power_two == 0:
