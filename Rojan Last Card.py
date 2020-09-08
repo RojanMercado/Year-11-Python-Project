@@ -178,12 +178,12 @@ while x == 1:
 
     player_randint = randint(0, player_len-1)
 
-    player_card = deck[player_randint]
+    players_card = deck[player_randint]
 
-    if player_card not in player_list:
-        player_list.append(player_card)
+    if players_card not in player_list:
+        player_list.append(players_card)
 
-        deck.remove(player_card)
+        deck.remove(players_card)
 
 "********************************************************************"
 #special function which checks if the card is in a power_card list
@@ -206,7 +206,7 @@ def power_card_checker(card_you_want_be_checked):
 
     elif card_ranker == rank_list2[2]:
         power_five = 0
-        power_two = 2
+        power_two = 1
         power_ace = 0
 
     elif card_ranker == rank_list2[1]:
@@ -306,7 +306,7 @@ def bot_turn(which_bot, last_card_played):
 
             bot_move(which_bot_text)
             print("{}{}".format(arrow, "Picks Up"))
-            pick_up(which_bot)
+            pick_up(which_bot, 1)
             gap()
 
             break
@@ -320,6 +320,7 @@ def print_player_list():
 
 def player_turn(card):
 
+    global power_five_compilation
     global current_card
     one()
     print("********************************************************************")
@@ -339,22 +340,16 @@ def player_turn(card):
     print("(If you want to pick up, enter '0')")
 
 
+    power_card_checker(current_card)
 
     y = 1
     while y == 1:
+
         try:
             player_turn_index = int(input(''))
 
-            if power_five == 1:
-                rank_checker(player_list[player_turn_index])
-                five_checker = returned_rank
+            player_card = player_list[player_turn_index]
 
-                rank_checker(current_card)
-                current_card_rank = returned_rank
-
-                if five_checker != rank_checker:
-                    print("The current card is a {}".format(current_card))
-                    print("If you do not have a Five, then you must pick up five")
             if player_turn_index == 0:
                 player_list.append(deck[0])
                 deck.remove(deck[0])
@@ -387,27 +382,45 @@ def player_turn(card):
                     rank_checker(player_turn_card)
                     player_value = returned_rank
 
-                    if starter_suit != player_suit and starter_value != player_value:
-                        print("Card cannot be played")
 
-                    if starter_suit == player_suit or starter_value == player_value:
+                    """implementing power five"""
+                    if power_five == 1:
 
-                        current_card = player_turn_card
+                        rank_checker(player_card)
+                        five_checker = returned_rank
 
-                        player_print()
-                        print("{}{}".format(arrow, current_card))
-                        player_list.remove(current_card)
+                        rank_checker(current_card)
+                        current_card_rank = returned_rank
 
-                        if player_list_len == 1:
-                            print("You")
-                            print(arrow, "LAST CARD")
-                        if player_list_len == 0:
-                            print("You won")
-                            sys.exit()
-
-                        break
+                        if five_checker != rank_checker:
+                            print("The current card is a {}".format(current_card))
+                            print("If you do not have a Five, then you must pick up {}".format(power_five_compilation))
 
 
+                    #if the last card played was not a power card, then the main bulk of code continues through here
+                    if power_five == 0 and power_ace == 0: and power_two == 0:
+
+                        if starter_suit != player_suit and starter_value != player_value:
+                            print("Card cannot be played")
+
+                        if starter_suit == player_suit or starter_value == player_value:
+
+                            current_card = player_turn_card
+
+                            player_print()
+                            print("{}{}".format(arrow, current_card))
+                            player_list.remove(current_card)
+
+                            if player_list_len == 1:
+                                print("You")
+                                print(arrow, "LAST CARD")
+                            if player_list_len == 0:
+                                print("You won")
+                                sys.exit()
+
+                            break
+
+        """catching a value error"""
         except ValueError:
             gap()
             print("Please type in a valid number")
@@ -432,6 +445,8 @@ two()
 
 player_turn(starting_card)
 
+"""setting the power_five compilation (where you can stack multiple fives) to zero"""
+power_five_compilation = 0
 
 while True:
     for i in range(2):
