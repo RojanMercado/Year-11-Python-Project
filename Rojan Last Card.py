@@ -199,17 +199,17 @@ def power_card_checker(card_you_want_be_checked):
             card_ranker = rank_list2[i]
             break
 
-    if card_ranker == rank_list2[5]:
+    if card_ranker == rank_list2[4]:
         power_five = 1
         power_two = 0
         power_ace = 0
 
-    elif card_ranker == rank_list2[2]:
+    elif card_ranker == rank_list2[1]:
         power_five = 0
         power_two = 1
         power_ace = 0
 
-    elif card_ranker == rank_list2[1]:
+    elif card_ranker == rank_list2[0]:
         power_five = 0
         power_two = 0
         power_ace = 1
@@ -238,7 +238,7 @@ def pick_up_player(number):
         player_list.append(deck[0])
         deck.remove(deck[0])
 
-#********************************************************************#
+#********************************************************************##********************************************************************##********************************************************************#
 
 """function which almost completely automates the bots turn"""
 def bot_turn(which_bot, last_card_played):
@@ -249,15 +249,17 @@ def bot_turn(which_bot, last_card_played):
     """implementing power cards"""
     global power_card
 
-    x = 1
-
     gap()
     two()
-
+    print("********************************************************************")
+    gap()
     """Checking if the card is a power card"""
     power_card_checker(current_card)
 
     #********************************************************************#
+
+    #TESTER
+    print("power five: {}".format(power_five))
 
     #making which_bot into a string
     def which_bot_string(which_bot):
@@ -279,7 +281,6 @@ def bot_turn(which_bot, last_card_played):
     current_bot_list = bots_list[which_bot-1]
 
     bot_list_len = len(current_bot_list)
-
 
     """checking if the rank and suit of the card being checked matches with that of the last card played"""
     for i in range(bot_list_len):
@@ -335,6 +336,9 @@ def bot_turn(which_bot, last_card_played):
 
                 current_bot_list.remove(playing_card)
 
+                #TESTER
+                print("power five: {}".format(power_five))
+
                 """if a bot uses all their cards, they win"""
 
                 if len(current_bot_list) == 1:
@@ -356,7 +360,7 @@ def bot_turn(which_bot, last_card_played):
 
                 break
 
-#********************************************************************#
+#********************************************************************##********************************************************************##********************************************************************#
 
 """player's turn as a function"""
 def print_player_list():
@@ -385,37 +389,24 @@ def player_turn(card):
     print("Type in the number of the card you want to play in your list")
     print("(If you want to pick up, enter '0')")
 
-
     power_card_checker(current_card)
 
+    #TESTER
+    print("power five: {}".format(power_five))
+    
     y = 1
     while y == 1:
 
         try:
             player_turn_index = int(input(''))
 
-            player_card = player_list[player_turn_index]
-
-            #********************************************************************#
-
-            if player_turn_index == 0:
-
-                if power_five == 1:
-                    pick_up_player(power_five_compilation)
-
-                if power_five == 0:
-                    pick_up_player(1)
-
-                print_player_list()
-                break
-
-            #********************************************************************#
-
             if player_turn_index != 0:
                 if player_turn_index < 0 or player_turn_index > len(player_list):
                     print("Card cannot be played as you do not have {} cards".format(player_turn_index))
                     print("Please try again")
                     gap()
+
+            #********************************************************************#
 
                 if player_turn_index > 0 and player_turn_index < len(player_list)+1:
                     player_turn_card = player_list[player_turn_index-1]
@@ -447,14 +438,13 @@ def player_turn(card):
                         """Gives the total of cards that the player would have to pick up if they don't have a five, relative to how many fives have been played"""
                         power_five_compilation = power_five_count_compilation*5
 
-
                         rank_checker(player_card)
                         five_checker = returned_rank
 
                         rank_checker(current_card)
                         current_card_rank = returned_rank
 
-                        if five_checker != rank_checker:
+                        if five_checker != current_card_rank:
                             print("The current card is a {}".format(current_card))
                             print("If you do not have a Five, then you must pick up {} cards from the deck".format(power_five_compilation))
                             gap()
@@ -488,9 +478,24 @@ def player_turn(card):
                                 print("You won")
                                 sys.exit()
 
-                            break
+                            #TESTER
+                            print("power five: {}".format(power_five))
 
-        #catching a value error"""
+                            break
+            #********************************************************************#
+
+            if player_turn_index == 0:
+
+                if power_five == 1:
+                    pick_up_player(power_five_compilation)
+
+                if power_five == 0:
+                    pick_up_player(1)
+
+                print_player_list()
+                break
+
+        #catching a value error
         except ValueError:
             gap()
             print("Please type in a valid number")
@@ -515,6 +520,9 @@ gap()
 two()
 
 player_turn(starting_card)
+
+#TESTER
+print("power five: {}".format(power_five))
 
 """setting the power_five_count_compilation (where you can stack multiple fives) to zero"""
 power_five_count_compilation = 0
