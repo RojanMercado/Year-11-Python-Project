@@ -69,7 +69,7 @@ for e in range(4):
         card = ('{} of {}'.format(ranks[i], suits[e]))
         suit_list[e].append(card)
         rank_list[i].append(card)
-        if i == 2 or i == 5 or i == 1:
+        if i == 1 or i == 4 or i == 0:
             power_card_list.append(card)
         if card not in deck:
             deck.append(card)
@@ -258,9 +258,6 @@ def bot_turn(which_bot, last_card_played):
 
     #********************************************************************#
 
-    #TESTER
-    print("power five: {}".format(power_five))
-
     #making which_bot into a string
     def which_bot_string(which_bot):
         global which_bot_text
@@ -301,6 +298,8 @@ def bot_turn(which_bot, last_card_played):
 
                 power_five_count_compilation +=1
 
+                power_five_compilation = power_five_count_compilation*5
+
                 bot_move(which_bot_text)
                 playing_card = checking_card
                 print("{}{}".format(arrow, playing_card))
@@ -310,19 +309,21 @@ def bot_turn(which_bot, last_card_played):
                 power_card_checker(current_card)
 
                 current_bot_list.remove(playing_card)
+                break
 
-                if i == bot_list_len-1:
+            if i == bot_list_len-1:
 
-                    bot_move(which_bot_text)
-                    print("{}{}".format(arrow, "Picks Up"))
-                    pick_up(which_bot, power_five_count_compilation*5)
-                    gap()
+                bot_move(which_bot_text)
+                print("{}{}{}".format(arrow, "Picks Up ", power_five_compilation))
+                pick_up(which_bot, power_five_compilation)
+                gap()
 
-                    break
+                break
         #********************************************************************#
 
         """checking if the card is valid card to be played from the current card"""
         if power_five == 0:
+            power_five_count_compilation = 0
 
             if checking_card_rank == current_rank or checking_card_suit == current_suit:
 
@@ -335,9 +336,6 @@ def bot_turn(which_bot, last_card_played):
                 power_card_checker(current_card)
 
                 current_bot_list.remove(playing_card)
-
-                #TESTER
-                print("power five: {}".format(power_five))
 
                 """if a bot uses all their cards, they win"""
 
@@ -390,9 +388,6 @@ def player_turn(card):
     print("(If you want to pick up, enter '0')")
 
     power_card_checker(current_card)
-
-    #TESTER
-    print("power five: {}".format(power_five))
     
     y = 1
     while y == 1:
@@ -444,6 +439,18 @@ def player_turn(card):
                         rank_checker(current_card)
                         current_card_rank = returned_rank
 
+                        if five_checker == current_card_rank:
+
+                            current_card = player_turn_card
+
+                            player_print()
+                            print("{}{}".format(arrow, current_card))
+                            player_list.remove(current_card)
+
+                            if player_list_len == 1:
+                                print("You")
+                                print(arrow, "LAST CARD")
+
                         if five_checker != current_card_rank:
                             print("The current card is a {}".format(current_card))
                             print("If you do not have a Five, then you must pick up {} cards from the deck".format(power_five_compilation))
@@ -461,7 +468,7 @@ def player_turn(card):
                     if power_five == 0 and power_ace == 0 and power_two == 0:
 
                         if starter_suit != player_suit and starter_value != player_value:
-                            print("Card cannot be played")
+                            print("Card cannot be played as neither the suit or the rank match")
 
                         if starter_suit == player_suit or starter_value == player_value:
 
@@ -477,9 +484,6 @@ def player_turn(card):
                             if player_list_len == 0:
                                 print("You won")
                                 sys.exit()
-
-                            #TESTER
-                            print("power five: {}".format(power_five))
 
                             break
             #********************************************************************#
@@ -521,16 +525,14 @@ two()
 
 player_turn(starting_card)
 
-#TESTER
-print("power five: {}".format(power_five))
-
 """setting the power_five_count_compilation (where you can stack multiple fives) to zero"""
 power_five_count_compilation = 0
 
+
+"""running all the functions"""
 while True:
     for i in range(2):
         bot_turn(i-1, current_card)
-    print("{}".format(len(deck)))
     player_turn(current_card)
 
 
