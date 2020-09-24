@@ -69,17 +69,21 @@ for e in range(4):
         card = ('{} of {}'.format(ranks[i], suits[e]))
         suit_list[e].append(card)
         rank_list[i].append(card)
-        if i == 1 or i == 4 or i == 0:
+        if i == 4 or i == 0:
             power_card_list.append(card)
         if card not in deck:
             deck.append(card)
 
+print("power_card_list = {}".format(power_card_list))
 "********************************************************************"
 
 "Functions to check the rank and suit of any card"
 
 def suit_checker(card_you_want_to_check):
     global returned_suit
+    global suit_checker
+
+    returned_suit = ''
 
     for i in range(4):
         if card_you_want_to_check in suit_list[i-1]:
@@ -89,6 +93,9 @@ def suit_checker(card_you_want_to_check):
 
 def rank_checker(f):
     global returned_rank
+    global rank_check
+
+    returned_rank = ''
 
     for i in range(13):
         if f in rank_list[i-1]:
@@ -189,35 +196,33 @@ while x == 1:
 #special function which checks if the card is in a power_card list
 
 def power_card_checker(card_you_want_be_checked):
+
     global power_five
-    global power_two
     global power_ace
+    global power_mod
+    global card_rank_number
+
+    card_rank_number = 0
 
     """returning the rank of the card"""
     for i in range(13):
         if card_you_want_be_checked in rank_list[i]:
-            card_ranker = rank_list2[i]
+            card_rank_number = i
+            print(card_rank_number)
             break
 
-    if card_ranker == rank_list2[4]:
+    if card_rank_number == 4:
         power_five = 1
-        power_two = 0
         power_ace = 0
 
-    elif card_ranker == rank_list2[1]:
+    elif card_rank_number == 0:
         power_five = 0
-        power_two = 1
-        power_ace = 0
-
-    elif card_ranker == rank_list2[0]:
-        power_five = 0
-        power_two = 0
         power_ace = 1
 
     else:
         power_five = 0
-        power_two = 0
         power_ace = 0
+
 "********************************************************************"
 current_card = ''
 
@@ -242,9 +247,12 @@ def pick_up_player(number):
 
 """function which almost completely automates the bots turn"""
 def bot_turn(which_bot, last_card_played):
+
     global playing_card
     global which_bot_string
     global current_card
+    global power_five_count_compilation
+    global power_five
 
     """implementing power cards"""
     global power_card
@@ -253,12 +261,14 @@ def bot_turn(which_bot, last_card_played):
     two()
     print("********************************************************************")
     gap()
+
     """Checking if the card is a power card"""
     power_card_checker(current_card)
+    print("power five = {}".format(power_five))
 
     #********************************************************************#
 
-    #making which_bot into a string
+    #making which_bot into a string (printing out "Bot One/Bot Two)
     def which_bot_string(which_bot):
         global which_bot_text
 
@@ -279,6 +289,8 @@ def bot_turn(which_bot, last_card_played):
 
     bot_list_len = len(current_bot_list)
 
+    power_five_count_compilation +=1
+
     """checking if the rank and suit of the card being checked matches with that of the last card played"""
     for i in range(bot_list_len):
 
@@ -294,11 +306,13 @@ def bot_turn(which_bot, last_card_played):
 
         #implementing power five for the situation
         if power_five == 1:
-            if checking_card_rank == current_suit:
 
-                power_five_count_compilation +=1
+            power_five_compilation = power_five_count_compilation*5
 
-                power_five_compilation = power_five_count_compilation*5
+            print("power_five_count_compilation  = {}".format(power_five_count_compilation))
+            print("power_five_compilation = {}".format(power_five_compilation))
+
+            if checking_card_rank == current_rank:
 
                 bot_move(which_bot_text)
                 playing_card = checking_card
@@ -318,6 +332,8 @@ def bot_turn(which_bot, last_card_played):
                 pick_up(which_bot, power_five_compilation)
                 gap()
 
+                power_five_count_compilation = 0
+                fives.remove(current_card)
                 break
         #********************************************************************#
 
@@ -370,11 +386,13 @@ def player_turn(card):
     global power_five_count_compilation
     global power_five_compilation
     global current_card
+
     one()
     print("********************************************************************")
     gap()
-    player_list_len = len(player_list)
+
     print_player_list()
+
     gap()
     print("Current Card")
     print(arrow, current_card)
@@ -396,6 +414,9 @@ def player_turn(card):
             player_turn_index = int(input(''))
 
             if player_turn_index != 0:
+
+                print("if player_turn_index != 0:")
+                
                 if player_turn_index < 0 or player_turn_index > len(player_list):
                     print("Card cannot be played as you do not have {} cards".format(player_turn_index))
                     print("Please try again")
@@ -433,13 +454,13 @@ def player_turn(card):
                         """Gives the total of cards that the player would have to pick up if they don't have a five, relative to how many fives have been played"""
                         power_five_compilation = power_five_count_compilation*5
 
-                        rank_checker(player_card)
-                        five_checker = returned_rank
+                        print("power_five_count_compilation  = {}".format(power_five_count_compilation))
+                        print("power_five_compilation = {}".format(power_five_compilation))
 
                         rank_checker(current_card)
                         current_card_rank = returned_rank
 
-                        if five_checker == current_card_rank:
+                        if player_suit == current_card_rank:
 
                             current_card = player_turn_card
 
@@ -447,25 +468,24 @@ def player_turn(card):
                             print("{}{}".format(arrow, current_card))
                             player_list.remove(current_card)
 
-                            if player_list_len == 1:
+                            if len(player_list) == 1:
                                 print("You")
                                 print(arrow, "LAST CARD")
 
-                        if five_checker != current_card_rank:
+                        if player_value != current_card_rank:
                             print("The current card is a {}".format(current_card))
                             print("If you do not have a Five, then you must pick up {} cards from the deck".format(power_five_compilation))
                             gap()
-
-
-
                     if power_five == 0:
                         power_five_count_compilation = 0
 
-                    #********************************************************************#
+                    #*******************************************************************
 
 
-                    #if the last card played was not a power card, then the main bulk of code continues through here
-                    if power_five == 0 and power_ace == 0 and power_two == 0:
+                    #if the last card played was not a power card, then the main bulk of code continues through here"""
+                    if power_five == 0:
+
+                        print("if power_five == 0 and power_ace == 0 and power_two == 0:")
 
                         if starter_suit != player_suit and starter_value != player_value:
                             print("Card cannot be played as neither the suit or the rank match")
@@ -478,10 +498,11 @@ def player_turn(card):
                             print("{}{}".format(arrow, current_card))
                             player_list.remove(current_card)
 
-                            if player_list_len == 1:
+                            if len(player_list) == 1:
                                 print("You")
                                 print(arrow, "LAST CARD")
-                            if player_list_len == 0:
+
+                            if len(player_list) == 0:
                                 print("You won")
                                 sys.exit()
 
@@ -491,7 +512,12 @@ def player_turn(card):
             if player_turn_index == 0:
 
                 if power_five == 1:
+
+                    power_five_compilation = power_five_count_compilation*5
+                    print("power_five_count_compilation  = {}".format(power_five_count_compilation))
+                    print("power_five_compilation = {}".format(power_five_compilation))
                     pick_up_player(power_five_compilation)
+                    fives.remove(current_card)
 
                 if power_five == 0:
                     pick_up_player(1)
@@ -504,7 +530,7 @@ def player_turn(card):
             gap()
             print("Please type in a valid number")
 
-#********************************************************************##********************************************************************##********************************************************************#
+#************************************************************************************************************************************************************************************************************
 
 print("Last Card")
 one()
@@ -528,11 +554,15 @@ player_turn(starting_card)
 """setting the power_five_count_compilation (where you can stack multiple fives) to zero"""
 power_five_count_compilation = 0
 
-
 """running all the functions"""
 while True:
     for i in range(2):
+        print("power five = {}".format(power_five))
         bot_turn(i-1, current_card)
+        gap()
+        print("numbers of cards in 'deck' = {}".format(len(deck)))
+        gap()
+    print("power five = {}".format(power_five))
     player_turn(current_card)
 
 
