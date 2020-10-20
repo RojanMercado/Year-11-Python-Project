@@ -94,7 +94,7 @@ def suit_checker(card_you_want_to_check):
         if card_you_want_to_check in suit_list[i-1]:
             suit_check = i
             break
-    returned_suit = suit_list2[suit_check]
+    returned_suit = suit_list2[suit_check-1]
 
 def rank_checker(f):
     global returned_rank
@@ -106,7 +106,7 @@ def rank_checker(f):
         if f in rank_list[i-1]:
             rank_check = i
             break
-    returned_rank = rank_list2[rank_check]
+    returned_rank = rank_list2[rank_check-1]
 
 "********************************************************************"
 
@@ -122,6 +122,9 @@ bot_one_list = []
 x = 1
 
 shuffle_deck()
+if test == 1:
+    for i in range(2):
+        bot_one_list.append(fives[i])
 
 while x == 1:
     bot_one_len = len(deck)
@@ -150,6 +153,11 @@ shuffle_deck()
 """Bot two"""
 bot_two_list = []
 x = 1
+
+if test == 1:
+    for i in range(2):
+        bot_two_list.append(fives[i+2])
+
 while x == 1:
     bot_two_len = len(deck)
 
@@ -261,7 +269,7 @@ def pick_up_player(number_of_cards):
         player_list.append(deck[0])
         deck.remove(deck[0])
 
-#********************************************************************##********************************************************************##********************************************************************#
+"""************************************************************************************************************************************************************************************************************"""
 
 """function which almost completely automates the bots turn"""
 def bot_turn(which_bot, last_card_played):
@@ -333,7 +341,10 @@ def bot_turn(which_bot, last_card_played):
         if power_five == 1:
 
             power_five_compilation = power_five_count_compilation*5
-
+            if test == 1:
+                gap()
+                print("A FIVE HAS BEEN PLAYED!!!!!!!!!")
+                gap()
             if test == 1:
                 print("power_five_count_compilation  = {}".format(power_five_count_compilation))
                 print("power_five_compilation = {}".format(power_five_compilation))
@@ -381,7 +392,13 @@ def bot_turn(which_bot, last_card_played):
                 current_card = checking_card
                 print("{}{}".format(arrow, current_card))
                 gap()
-
+                if test == 1:
+                    gap()
+                    one()
+                    print("BOT_CURRENT_SUIT = {}, BOT_CURRENT_RANK = {}".format(current_suit, current_rank))
+                    print("BOT_CHECKING_CARD_SUIT = {}, BOT_CHECKING_CARD_RANK = {}".format(checking_card_suit, checking_card_rank))
+                    gap()
+                    one()
                 power_card_checker(current_card)
 
                 current_bot_list.remove(current_card)
@@ -455,26 +472,32 @@ def player_turn(card):
     two()
     power_card_checker(current_card)
 
+    "********************************************************************"
+    if power_five == 1:
+        """variable counts how many times a Five has been played"""
+        power_five_count_compilation += 1
+    if power_five == 0:
+        power_five_count_compilation = 0
+    "********************************************************************"
 
     y = 1
     while y == 1:
-
         try:
             player_turn_index = int(input(''))
 
             if player_turn_index != 0:
                 if test == 1:
+                    gap()
                     print("if player_turn_index != 0:")
                     if test == 1:
                             print("power_five_count_compilation  = {}".format(power_five_count_compilation))
-                            print("power_five_compilation = {}".format(power_five_compilation))
                 
                 if player_turn_index < 0 or player_turn_index > len(player_list):
                     print("Card cannot be played as you do not have {} cards".format(player_turn_index))
                     print("Please try again")
                     gap()
 
-            #********************************************************************#
+                "********************************************************************"
 
                 if player_turn_index > 0 and player_turn_index < len(player_list)+1:
                     player_turn_card = player_list[player_turn_index-1]
@@ -494,15 +517,22 @@ def player_turn(card):
 
                     rank_checker(player_turn_card)
                     player_value = returned_rank
-
+                    if test == 1:
+                        gap()
+                        one()
+                        print("STARTER_SUIT = {}, STARTER_RANK = {}".format(starter_suit, starter_value))
+                        print("PLAYER_SUIT = {}, PLAYER_RANK = {}".format(player_suit, player_value))
+                        gap()
+                        one()
                     #********************************************************************#
 
                     #implementing power five for the situation
                     if power_five == 1:
 
-                        """counts how many times a Five has been played"""
-                        power_five_count_compilation += 1
-
+                        if test == 1:
+                            gap()
+                            print("A FIVE HAS BEEN PLAYED!!!!!!!!!")
+                            gap()
                         """Gives the total of cards that the player would have to pick up if they don't have a five, relative to how many fives have been played"""
                         power_five_compilation = power_five_count_compilation*5
 
@@ -526,7 +556,8 @@ def player_turn(card):
                                 gap()
                                 print("You")
                                 print(arrow, "LAST CARD")
-
+                                break
+                            break
                         if player_value != current_card_rank:
                             print("The current card is a {}".format(current_card))
                             print("If you do not have a Five, then you must pick up {} cards from the deck".format(power_five_compilation))
