@@ -1,4 +1,4 @@
-#Imports
+"Imports"
 from random import*
 from random import shuffle
 import sys
@@ -21,13 +21,23 @@ def sleep(how_many_seconds_you_want_to_wait):
 arrow = "> "
 
 """Creating a complete standard deck of cards"""
-ranks = ["Ace", "2", "3", "4", "5", "6", "7","8", "9", "10", "Jack", "Queen", "King"]
+ranks = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]
 suits = ["Clubs", "Diamonds", "Hearts", "Spades"]
 deck = []
 
-"***********************************************************"
+"*********************************************************************************************************************************************************************************"
+
+"tester variable"
 test = 1
-"***********************************************************"
+
+"*********************************************************************************************************************************************************************************"
+
+if test == 1:
+    print("Do you want to test the fives?")
+    five_tester = input("> ")
+if test == 0:
+    five_tester = "no"
+
 aces = []
 twos = []
 threes = []
@@ -122,7 +132,7 @@ bot_one_list = []
 x = 1
 
 shuffle_deck()
-if test == 1:
+if five_tester == "yes":
     for i in range(2):
         bot_one_list.append(fives[i])
 
@@ -154,7 +164,7 @@ shuffle_deck()
 bot_two_list = []
 x = 1
 
-if test == 1:
+if five_tester == "yes":
     for i in range(2):
         bot_two_list.append(fives[i+2])
 
@@ -380,6 +390,7 @@ def bot_turn(which_bot, last_card_played):
                 power_five_count_compilation = 0
                 fives.remove(current_card)
                 break
+
         #********************************************************************#
 
         """checking if the card is valid card to be played from the current card"""
@@ -540,13 +551,31 @@ def player_turn(card):
                             print("power_five_count_compilation  = {}".format(power_five_count_compilation))
                             print("power_five_compilation = {}".format(power_five_compilation))
 
+                        if test == 1:
+                            gap()
+                            print("right before 'rank_checker(current_card)'")
                         rank_checker(current_card)
+                        if test == 1:
+                            print("right after 'rank_checker(current_card)'")
+                            gap()
+
+                        if test == 1:
+                            gap()
+                            print("right before 'current_card_rank = returned_rank'")
                         current_card_rank = returned_rank
-
-                        if player_suit == current_card_rank:
-
+                        if test == 1:
+                            gap()
+                            print("right after 'current_card_rank = returned_rank'")
+                            print("player suit == {}, current_card_rank == {}".format(player_suit, current_card_rank))
+                        if player_value == current_card_rank:
+                            if test == 1:
+                                print("CURRENTLY IN THE IF STATEMENT")
                             current_card = player_turn_card
 
+                            if test == 1:
+                                print("********************************************************************")
+                                print("if player_suit == current_card_rank:")
+                                print("********************************************************************")
                             player_print()
                             print("{}{}".format(arrow, current_card))
                             player_list.remove(current_card)
@@ -650,7 +679,7 @@ tutorial = 0
 """setting the power_five_count_compilation (where you can stack multiple fives) to zero"""
 power_five_count_compilation = 0
 
-#************************************************************************************************************************************************************************************************************
+#************************************************************************************************************************************************************************************************************#
 
 """running all the functions"""
 while True:
