@@ -1,22 +1,40 @@
-"Imports"
+"""Imports"""
 from random import*
 from random import shuffle
 import sys
 import time
 
 """Basic Functions"""
+
+
 def gap():
     print("")
+
+
 def player_print():
     print("Your turn: ")
-def bot_move(which_bot_text):
-    print("Bot {}'s Turn:".format(which_bot_text))
-def one():
-    time.sleep(1)
-def two():
-    time.sleep(2)
+
+
+def bot_move(bot_string):
+    print("Bot {}'s Turn:".format(bot_string))
+
+
 def sleep(how_many_seconds_you_want_to_wait):
     time.sleep(how_many_seconds_you_want_to_wait)
+
+
+def processing(string):
+    sys.stdout.write(string)
+
+    def ellipsis():
+        time.sleep(0.55)
+        sys.stdout.write(".")
+
+    for i in range(4):
+        ellipsis()
+
+
+"*********************************************************************************************************************************************************************************"
 
 arrow = "> "
 
@@ -27,16 +45,59 @@ deck = []
 
 "*********************************************************************************************************************************************************************************"
 
-"tester variable"
-test = 1
+# Admin Password: (if you don't want to be confused by this, read on)
+admin_answer = randint(5,12)
+
+admin_checker2_decider = randint(1,3)
+admin_checker2_list = [2,3,4]
+admin_checker2 = admin_checker2_list[admin_checker2_decider-1]
+
+admin_checker1 = admin_answer*admin_checker2
+print("{},{}".format(admin_checker1, admin_checker2))
+gap()
+print("**************************")
+print("LET'S PLAY LAST CARD!")
+print("**************************")
+gap()
+admin_loop = 1
+while admin_loop == 1:
+    try:
+        global test
+        global auto_tester
+        global five_tester
+
+        print("Press ENTER to play")
+        admin_password = int(input(arrow))
+        if admin_password == admin_answer:
+            print("'test' value (integer)")
+            test = int(input(arrow))
+            print("'five_tester' value? (yes or no)")
+            five_tester = input(arrow)
+            print("'auto_tester' tester value? (yes or no)")
+            auto_tester = input(arrow)
+            print("'time1 value' (integer)")
+            time1 = float(input(arrow))
+            print("'time2 value' (integer)")
+            time2 = float(input(arrow))
+        if admin_password != admin_answer:
+            test = 0
+            auto_tester = "no"
+            five_tester = "no"
+            time1 = 1
+            time2 = 2
+        break
+
+    except ValueError:
+        test = 0
+        auto_tester = "no"
+        five_tester = "no"
+        time1 = 1
+        time2 = 2
+        break
+
 
 "*********************************************************************************************************************************************************************************"
 
-if test == 1:
-    print("Do you want to test the fives?")
-    five_tester = input("> ")
-if test == 0:
-    five_tester = "no"
 
 aces = []
 twos = []
@@ -84,15 +145,19 @@ for e in range(4):
             power_card_list.append(card)
         if card not in deck:
             deck.append(card)
+
+# tester variable (test = 1 for testing)
 if test == 1:
     gap()
     print("ENTIRE DECK")
     print("{}".format(deck))
     gap()
     print("power_card_list = {}".format(power_card_list))
+
 "********************************************************************"
 
 "Functions to check the rank and suit of any card"
+
 
 def suit_checker(card_you_want_to_check):
     global returned_suit
@@ -106,6 +171,7 @@ def suit_checker(card_you_want_to_check):
             break
     returned_suit = suit_list2[suit_check-1]
 
+
 def rank_checker(f):
     global returned_rank
     global rank_check
@@ -118,16 +184,19 @@ def rank_checker(f):
             break
     returned_rank = rank_list2[rank_check-1]
 
-"********************************************************************"
+# ********************************************************************"
 
-"""adding to the randomizing"""
+# adding to the randomizing"""
+
+
 def shuffle_deck():
     for p in range(100):
         shuffle(deck)
 
-"********************************************************************"
+# ********************************************************************"
+# Bot one
 
-"""Bot one"""
+
 bot_one_list = []
 x = 1
 
@@ -155,7 +224,7 @@ while x == 1:
         deck.remove(bot_one_card)
 
 
-#********************************************************************#
+# ********************************************************************#
 
 """adding to the randomizing"""
 shuffle_deck()
@@ -186,7 +255,7 @@ while x == 1:
 
         deck.remove(bot_two_card)
 
-#********************************************************************#
+# ********************************************************************#
 
 
 """adding to the randomizing"""
@@ -214,12 +283,14 @@ while x == 1:
 
         deck.remove(players_card)
 
+# tester variable (test = 1 for testing)
 if test == 1:
     print("bot_one_list = {}".format(bot_one_list))
     print("bot_two_list = {}".format(bot_two_list))
 
-"********************************************************************"
-#special function which checks if the card is in a power_card list
+# ********************************************************************"
+# special function which checks if the card is in a power_card list
+
 
 def power_card_checker(card_you_want_be_checked):
     global test
@@ -235,6 +306,8 @@ def power_card_checker(card_you_want_be_checked):
     for i in range(13):
         if card_you_want_be_checked in rank_list[i]:
             card_rank_number = i
+
+            # tester variable (test = 1 for testing)
             if test == 1:
                 print("card_rank_number = {}".format(card_rank_number))
             break
@@ -250,23 +323,31 @@ def power_card_checker(card_you_want_be_checked):
     else:
         power_five = 0
         power_ace = 0
+# ********************************************************************"
 
-"********************************************************************"
+
 current_card = ''
-
 bots_list = [bot_one_list, bot_two_list]
 
 """function which automates bots and the player picking up"""
+
+
 def pick_up(bot_number, number_of_cards):
     global bots_list
-    global current_bot_list
+    global auto_tester
 
     current_bot_list = bots_list[bot_number-1]
 
+    # tester variable (test = 1 for testing)
     if test == 1:
-        print("current_bot_list = {}".format(current_bot_list))
+        if auto_tester == "no":
+            print("current_bot_list = {}".format(current_bot_list))
+        if auto_tester == "yes":
+            print("Player list = {}".format(current_bot_list))
 
     for i in range(number_of_cards):
+
+        # tester variable (test = 1 for testing)
         if test == 1:
             print("TRYING TO PICK UP A CARD FOR THE BOT")
         current_bot_list.append(deck[0])
@@ -279,13 +360,25 @@ def pick_up_player(number_of_cards):
         player_list.append(deck[0])
         deck.remove(deck[0])
 
+
 """************************************************************************************************************************************************************************************************************"""
 
 """function which almost completely automates the bots turn"""
+
+# making which_bot into a string (printing out "Bot One/Bot Two)
+
+
+def bot_number_string(bot_number):
+    global which_bot_text
+
+    bot_number_list = ["One", "Two"]
+    which_bot_text = bot_number_list[bot_number-1]
+
+
 def bot_turn(which_bot, last_card_played):
     global test
 
-    global bot_number_string
+    global bot_number_string  # function
     global current_card
     global power_five_count_compilation
     global power_five
@@ -294,23 +387,18 @@ def bot_turn(which_bot, last_card_played):
     global power_card
 
     gap()
-    two()
+    sleep(time2)
     print("********************************************************************")
     gap()
 
     """Checking if the card is a power card"""
     power_card_checker(current_card)
+
+    # tester variable (test = 1 for testing)
     if test == 1:
         print("power five = {}".format(power_five))
 
-    #********************************************************************#
-
-    #making which_bot into a string (printing out "Bot One/Bot Two)
-    def bot_number_string(which_bot):
-        global which_bot_text
-
-        bot_number_list = ["One", "Two"]
-        which_bot_text = bot_number_list[which_bot-1]
+    # ********************************************************************#
 
     bot_number_string(which_bot)
 
@@ -326,13 +414,13 @@ def bot_turn(which_bot, last_card_played):
 
     bot_list_len = len(current_bot_list)
 
-
+    # tester variable (test = 1 for testing)
     if test == 1:
         gap()
         print("Bot {} List = {}".format(which_bot_text, current_bot_list))
         gap()
 
-    power_five_count_compilation +=1
+    power_five_count_compilation += 1
 
     """checking if the rank and suit of the card being checked matches with that of the last card played"""
     for i in range(bot_list_len):
@@ -345,32 +433,34 @@ def bot_turn(which_bot, last_card_played):
         rank_checker(checking_card)
         checking_card_rank = returned_rank
 
-        #********************************************************************#
+        # ********************************************************************#
 
-        #implementing power five for the situation
+        # implementing power five for the situation
         if power_five == 1:
 
             power_five_compilation = power_five_count_compilation*5
+            # tester variable (test = 1 for testing)
             if test == 1:
                 gap()
                 print("A FIVE HAS BEEN PLAYED!!!!!!!!!")
                 gap()
+            # tester variable (test = 1 for testing)
             if test == 1:
                 print("power_five_count_compilation  = {}".format(power_five_count_compilation))
                 print("power_five_compilation = {}".format(power_five_compilation))
+                gap()
 
             if checking_card_rank == current_rank:
-
                 bot_move(which_bot_text)
                 current_card = checking_card
                 print("{}{}".format(arrow, current_card))
                 gap()
 
-
                 power_card_checker(current_card)
 
                 current_bot_list.remove(current_card)
 
+                # tester variable (test = 1 for testing)
                 if test == 1:
                     gap()
                     print(current_bot_list)
@@ -383,6 +473,8 @@ def bot_turn(which_bot, last_card_played):
                 print("{}{}{} {}".format(arrow, "Picks Up ", power_five_compilation, "cards"))
                 pick_up(which_bot, power_five_compilation)
                 gap()
+
+                # tester variable (test = 1 for testing)
                 if test == 1:
                     gap()
                     print(current_bot_list)
@@ -391,7 +483,7 @@ def bot_turn(which_bot, last_card_played):
                 fives.remove(current_card)
                 break
 
-        #********************************************************************#
+        # ********************************************************************#
 
         """checking if the card is valid card to be played from the current card"""
         if power_five == 0:
@@ -403,17 +495,20 @@ def bot_turn(which_bot, last_card_played):
                 current_card = checking_card
                 print("{}{}".format(arrow, current_card))
                 gap()
+
+                # tester variable (test = 1 for testing)
                 if test == 1:
                     gap()
-                    one()
+                    sleep(time1)
                     print("BOT_CURRENT_SUIT = {}, BOT_CURRENT_RANK = {}".format(current_suit, current_rank))
                     print("BOT_CHECKING_CARD_SUIT = {}, BOT_CHECKING_CARD_RANK = {}".format(checking_card_suit, checking_card_rank))
                     gap()
-                    one()
+                    sleep(time1)
                 power_card_checker(current_card)
 
                 current_bot_list.remove(current_card)
 
+                # tester variable (test = 1 for testing)
                 if test == 1:
                     gap()
                     print(current_bot_list)
@@ -437,18 +532,24 @@ def bot_turn(which_bot, last_card_played):
                 print("{}{}".format(arrow, "Picks Up"))
                 pick_up(which_bot, 1)
                 gap()
+
+                # tester variable (test = 1 for testing)
                 if test == 1:
                     gap()
                     print(current_bot_list)
                     gap()
                 break
 
-#********************************************************************##********************************************************************##********************************************************************#
+# ********************************************************************##********************************************************************##********************************************************************#
+
 
 """player's turn as a function"""
+
+
 def print_player_list():
     print("Your Cards: ")
     print(player_list)
+
 
 def player_turn(card):
     global test
@@ -456,10 +557,11 @@ def player_turn(card):
     global power_five_count_compilation
     global power_five_compilation
     global current_card
+    global auto_tester
 
     global tutorial
 
-    one()
+    sleep(time1)
     print("********************************************************************")
     gap()
 
@@ -469,18 +571,18 @@ def player_turn(card):
     print("Current Card")
     print(arrow, current_card)
     gap()
-    two()
+    sleep(time2)
 
     """implementing power cards"""
     global power_card
 
     print("Type in the number of the card you want to play in your list")
     if tutorial == 1:
-        two()
+        sleep(time2)
         print("('1' would be {}, '2' would be {} and so on.)".format(player_list[0], player_list[1]))
-        two()
+        sleep(time2)
     print("(If you want to pick up, enter '0')")
-    two()
+    sleep(time2)
     power_card_checker(current_card)
 
     "********************************************************************"
@@ -491,18 +593,18 @@ def player_turn(card):
         power_five_count_compilation = 0
     "********************************************************************"
 
-    y = 1
-    while y == 1:
+    while True:
         try:
             player_turn_index = int(input(''))
 
             if player_turn_index != 0:
+
+                # tester variable (test = 1 for testing)
                 if test == 1:
                     gap()
                     print("if player_turn_index != 0:")
-                    if test == 1:
-                            print("power_five_count_compilation  = {}".format(power_five_count_compilation))
-                
+                    print("power_five_count_compilation  = {}".format(power_five_count_compilation))
+
                 if player_turn_index < 0 or player_turn_index > len(player_list):
                     print("Card cannot be played as you do not have {} cards".format(player_turn_index))
                     print("Please try again")
@@ -513,9 +615,8 @@ def player_turn(card):
                 if player_turn_index > 0 and player_turn_index < len(player_list)+1:
                     player_turn_card = player_list[player_turn_index-1]
 
-
-
                     """checking starter card rank and suit"""
+
                     suit_checker(card)
                     starter_suit = returned_suit
 
@@ -528,18 +629,22 @@ def player_turn(card):
 
                     rank_checker(player_turn_card)
                     player_value = returned_rank
+
+                    # tester variable (test = 1 for testing)
                     if test == 1:
                         gap()
-                        one()
+                        sleep(time1)
                         print("STARTER_SUIT = {}, STARTER_RANK = {}".format(starter_suit, starter_value))
                         print("PLAYER_SUIT = {}, PLAYER_RANK = {}".format(player_suit, player_value))
                         gap()
-                        one()
-                    #********************************************************************#
+                        sleep(time1)
 
-                    #implementing power five for the situation
+                    # ********************************************************************#
+
+                    # implementing power five for the situation
                     if power_five == 1:
 
+                        # tester variable (test = 1 for testing)
                         if test == 1:
                             gap()
                             print("A FIVE HAS BEEN PLAYED!!!!!!!!!")
@@ -550,16 +655,12 @@ def player_turn(card):
                         if test == 1:
                             print("power_five_count_compilation  = {}".format(power_five_count_compilation))
                             print("power_five_compilation = {}".format(power_five_compilation))
-
-                        if test == 1:
                             gap()
                             print("right before 'rank_checker(current_card)'")
                         rank_checker(current_card)
                         if test == 1:
                             print("right after 'rank_checker(current_card)'")
                             gap()
-
-                        if test == 1:
                             gap()
                             print("right before 'current_card_rank = returned_rank'")
                         current_card_rank = returned_rank
@@ -576,12 +677,13 @@ def player_turn(card):
                                 print("********************************************************************")
                                 print("if player_suit == current_card_rank:")
                                 print("********************************************************************")
+
                             player_print()
                             print("{}{}".format(arrow, current_card))
                             player_list.remove(current_card)
 
                             if len(player_list) == 1:
-                                one()
+                                sleep(time1)
                                 gap()
                                 print("You")
                                 print(arrow, "LAST CARD")
@@ -594,10 +696,9 @@ def player_turn(card):
                     if power_five == 0:
                         power_five_count_compilation = 0
 
-                    #*******************************************************************
+                    # *******************************************************************
 
-
-                    #if the last card played was not a power card, then the main bulk of code continues through here"""
+                    # if the last card played was not a power card, then the main bulk of code continues through here"""
                     if power_five == 0:
                         if test == 1:
                             print("if power_five == 0 and power_ace == 0 and power_two == 0:")
@@ -606,7 +707,6 @@ def player_turn(card):
                             print("Card cannot be played as neither the suit or the rank match")
 
                         if starter_suit == player_suit or starter_value == player_value:
-
                             current_card = player_turn_card
 
                             player_print()
@@ -614,7 +714,7 @@ def player_turn(card):
                             player_list.remove(current_card)
 
                             if len(player_list) == 1:
-                                one()
+                                sleep(time1)
                                 gap()
                                 print("You")
                                 print(arrow, "LAST CARD")
@@ -625,7 +725,7 @@ def player_turn(card):
                                 sys.exit()
 
                             break
-            #********************************************************************#
+            # ********************************************************************#
 
             if player_turn_index == 0:
 
@@ -641,20 +741,24 @@ def player_turn(card):
                     fives.remove(current_card)
 
                 if power_five == 0:
+                    player_print()
+                    print("{}{}".format(arrow, "Picks up"))
                     pick_up_player(1)
+                    gap()
 
                 print_player_list()
                 break
 
-        #catching a value error from the player
+        # catching a value error from the player
         except ValueError:
             gap()
             print("Please type in a valid number")
 
-#************************************************************************************************************************************************************************************************************
+# ************************************************************************************************************************************************************************************************************
 
-print("LAST CARD")
-one()
+
+processing("Loading")
+gap()
 gap()
 
 """ensuring that the starting card is not a power card"""
@@ -668,35 +772,49 @@ print(arrow, starting_card)
 
 current_card = starting_card
 gap()
-two()
+sleep(time2)
 
 """Setting up a little help suggestion"""
 tutorial = 1
-player_turn(starting_card)
+if auto_tester == "no":
+    player_turn(starting_card)
 
 tutorial = 0
 
 """setting the power_five_count_compilation (where you can stack multiple fives) to zero"""
 power_five_count_compilation = 0
 
-#************************************************************************************************************************************************************************************************************#
+# ************************************************************************************************************************************************************************************************************#
 
 """running all the functions"""
-while True:
-    for i in range(2):
+if auto_tester == "no":
+    while True:
+        for i in range(2):
+            if test == 1:
+                print("power five = {}".format(power_five))
+            bot_turn(i-1, current_card)
+            gap()
+            if test == 1:
+                print("numbers of cards in 'deck' = {}".format(len(deck)))
+            gap()
         if test == 1:
             print("power five = {}".format(power_five))
-        bot_turn(i-1, current_card)
-        gap()
+        player_turn(current_card)
+
+# ************************************************************************************************************************************************************************************************************#
+
+if auto_tester == "yes":
+    while True:
+        for i in range(2):
+            bot_turn(i-1, current_card)
+            gap()
+            if test == 1:
+                print("numbers of cards in 'deck' = {}".format(len(deck)))
+            gap()
         if test == 1:
-            print("numbers of cards in 'deck' = {}".format(len(deck)))
-        gap()
-    if test == 1:
-        print("power five = {}".format(power_five))
-    player_turn(current_card)
+            print("power five = {}".format(power_five))
 
-
-
+# ************************************************************************************************************************************************************************************************************#
 
 
 
