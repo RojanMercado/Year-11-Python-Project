@@ -365,11 +365,12 @@ def pick_up(bot_number, number_of_cards):
 
     if len(deck) == 0:
         # appending played cards to deck.
-        deck.append(played_card_list)
+        for i in range(len(played_card_list)):
+            deck.append(played_card_list[0])
+            played_card_list.remove(played_card_list[0])
 
         if test == 1:
             print("deck = {}".format(deck))
-        played_card_list.remove(played_card_list)
 
         processing("shuffling played cards")
         shuffle_deck()
@@ -380,6 +381,7 @@ def pick_up(bot_number, number_of_cards):
         for i in range(number_of_cards):
             # tester variable (test = 1 for testing)
             if test == 1:
+                print(current_bot_list)
                 print("TRYING TO PICK UP A CARD FOR THE BOT")
             current_bot_list.append(deck[0])
             deck.remove(deck[0])
