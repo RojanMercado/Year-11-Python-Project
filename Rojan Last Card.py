@@ -341,7 +341,8 @@ def power_card_checker(card_you_want_be_checked):
 
     else:
         power_five = 0
-        print("power_five == {}".format(power_five))
+        if test == 1:
+            print("power_five == {}".format(power_five))
 
 # ********************************************************************"
 
@@ -350,29 +351,45 @@ current_card = ''
 bots_list = [bot_one_list, bot_two_list]
 
 """function which automates bots and the player picking up"""
+# ********************************************************************"# ********************************************************************"# ********************************************************************"
 
 
 def pick_up(bot_number, number_of_cards):
     global bots_list
     global auto_tester
 
+# ---------------------------------------------------------------
     current_bot_list = bots_list[bot_number-1]
     # tester variable (test = 1 for testing)
     if test == 1:
         print("current_bot_list = {}".format(current_bot_list))
         if auto_tester == 1:
             print("Player list = {}".format(current_bot_list))
+# ---------------------------------------------------------------
 
     if len(deck) == 0:
+        if test == 1:
+            print("played_card_list = {}".format(played_card_list))
+            print("len of deck = {}".format(len(deck)))
+
         # appending played cards to deck.
         for i in range(len(played_card_list)):
+            if test == 1:
+                print("deck before card has been added = {}".format(deck))
+                gap()
+                print("right before card will be added to deck")
             deck.append(played_card_list[0])
             played_card_list.remove(played_card_list[0])
+            if test == 1:
+                print("played_card_list after card has been removed = {}".format(played_card_list))
 
         if test == 1:
             print("deck = {}".format(deck))
 
+        gap()
         processing("shuffling played cards")
+        gap()
+        gap()
         shuffle_deck()
         if test == 1:
             print("played_card_list = {}".format(played_card_list))
@@ -386,18 +403,34 @@ def pick_up(bot_number, number_of_cards):
             current_bot_list.append(deck[0])
             deck.remove(deck[0])
 
+# ********************************************************************"# ********************************************************************"# ********************************************************************"
+
 
 def pick_up_player(number_of_cards):
 
     if len(deck) == 0:
+        if test == 1:
+            print("played_card_list = {}".format(played_card_list))
+            print("len of deck = {}".format(len(deck)))
+
         # appending played cards to deck.
-        deck.append(played_card_list)
+        for i in range(len(played_card_list)):
+            if test == 1:
+                print("deck before card has been added = {}".format(deck))
+                gap()
+                print("right before card will be added to deck")
+            deck.append(played_card_list[0])
+            played_card_list.remove(played_card_list[0])
+            if test == 1:
+                print("played_card_list after card has been removed = {}".format(played_card_list))
 
         if test == 1:
             print("deck = {}".format(deck))
-        played_card_list.remove(played_card_list)
 
+        gap()
         processing("shuffling played cards")
+        gap()
+        gap()
         shuffle_deck()
         if test == 1:
             print("played_card_list = {}".format(played_card_list))
@@ -740,7 +773,7 @@ def player_turn(card):
                                 sleep(time1)
                                 gap()
                                 print("You")
-                                print(arrow, "LAST CARD")
+                                print(arrow, "LAST CARD!")
                                 break
                             break
                         if player_value != current_card_rank:
