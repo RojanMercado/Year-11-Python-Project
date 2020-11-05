@@ -366,42 +366,45 @@ def pick_up(bot_number, number_of_cards):
         if auto_tester == 1:
             print("Player list = {}".format(current_bot_list))
 # ---------------------------------------------------------------
+    for i in range(number_of_cards):
+        if len(deck) == 0:
 
-    if len(deck) == 0:
-        if test == 1:
-            print("played_card_list = {}".format(played_card_list))
-            print("len of deck = {}".format(len(deck)))
-
-        # appending played cards to deck.
-        for i in range(len(played_card_list)):
             if test == 1:
-                print("deck before card has been added = {}".format(deck))
+                print("currently right after len(deck) == 0")
                 gap()
-                print("right before card will be added to deck")
-            deck.append(played_card_list[0])
-            played_card_list.remove(played_card_list[0])
+                print("played_card_list = {}".format(played_card_list))
+                print("len of deck = {}".format(len(deck)))
+
+            # appending played cards to deck.
+            for i in range(len(played_card_list)):
+                if test == 1:
+                    print("deck before card has been added = {}".format(deck))
+                    gap()
+                    print("right before card will be added to deck")
+                deck.append(played_card_list[0])
+                played_card_list.remove(played_card_list[0])
+                if test == 1:
+                    print("played_card_list after card has been removed = {}".format(played_card_list))
+
             if test == 1:
-                print("played_card_list after card has been removed = {}".format(played_card_list))
+                print("deck = {}".format(deck))
 
-        if test == 1:
-            print("deck = {}".format(deck))
-
-        gap()
-        processing("shuffling played cards")
-        gap()
-        gap()
-        shuffle_deck()
-        if test == 1:
-            print("played_card_list = {}".format(played_card_list))
-
-    if len(deck) > 0:
-        for i in range(number_of_cards):
-            # tester variable (test = 1 for testing)
+            gap()
+            processing("shuffling played cards")
+            gap()
+            gap()
+            shuffle_deck()
             if test == 1:
-                print(current_bot_list)
-                print("TRYING TO PICK UP A CARD FOR THE BOT")
-            current_bot_list.append(deck[0])
-            deck.remove(deck[0])
+                print("played_card_list = {}".format(played_card_list))
+
+        if len(deck) > 0:
+
+                # tester variable (test = 1 for testing)
+                if test == 1:
+                    print(current_bot_list)
+                    print("TRYING TO PICK UP A CARD FOR THE BOT")
+                current_bot_list.append(deck[0])
+                deck.remove(deck[0])
 
 # ********************************************************************"# ********************************************************************"# ********************************************************************"
 
@@ -890,6 +893,7 @@ if auto_tester == 0:
             gap()
             if test == 1:
                 print("numbers of cards in 'deck' = {}".format(len(deck)))
+                print("number of cards in played_card_list = {}".format(len(played_card_list)))
             gap()
         if test == 1:
             print("power five = {}".format(power_five))
