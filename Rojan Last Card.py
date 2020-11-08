@@ -59,6 +59,11 @@ print("             Lets play LAST CARD!")
 print("****************************************************")
 gap()
 
+# IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE
+
+"""if you want to access SETTINGS in the game, divide the two numbers, then input the result in the first input. """
+
+# IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE # IMPORTANT NOTICE
 
 try:
     global test
@@ -71,6 +76,8 @@ try:
         # opportunity in which the user can easily change certain settings in the game.
         gap()
         print("'test' value? (prints almost all background variables)")
+        sleep(2)
+        print("DO NOT USE WHEN NOT IN TESTING")
         print("'1' (on) or '0' (off)")
         test = int(input(arrow))
         gap()
@@ -684,7 +691,7 @@ def player_turn(card):
 
     while True:
         try:
-            player_turn_index = int(input(''))
+            player_turn_index = int(input(arrow))
 
             if player_turn_index != 0:
 
