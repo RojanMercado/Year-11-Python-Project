@@ -1,0 +1,39 @@
+import time
+import sys
+
+"""-------------------------------------"""
+print(""""-------------------------------------""")
+print('Collatz Conjecture Proof')
+print("manually, i mean")
+print(""""-------------------------------------""")
+time.sleep(1)
+
+
+counter = 0  
+while True:
+    counter += 1
+    dummy_value = counter
+    fail_safe_list = []
+    while True:
+        ###basic instructions###
+        
+        if dummy_value%2 == 0:
+            dummy_value = 0.5*dummy_value
+        else:
+            dummy_value = 3*dummy_value + 1
+        #check if conjecture is true.
+        if dummy_value == 1 or dummy_value == 4:
+            print("#-----------#")
+            print(counter)
+            print("TRUE")
+            print("")
+            time.sleep(0.01)
+            break
+        
+        if dummy_value in fail_safe_list:
+            print(counter)
+            print("FALSE")
+            sys.exit()
+            
+        fail_safe_list.append(dummy_value)
+        print(fail_safe_list)
